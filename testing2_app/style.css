@@ -1,0 +1,178 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Cards */
+.card {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+/* Main AQI Card */
+.main-aqi {
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.aqi-display {
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* AQI Progress Bar */
+.progress-container {
+    margin-top: 10px;
+}
+
+progress {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Weather Card */
+.weather-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.weather-item {
+    text-align: center;
+}
+
+.weather-icon {
+    font-size: 2rem;
+    display: block;
+}
+
+.weather-data {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Health Advisory */
+.health-card {
+    padding: 20px;
+}
+
+.health-message {
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Refresh Button */
+.refresh-button {
+    background: #ff7eb3;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.refresh-button:hover {
+    background: #ff4d94;
+    transform: scale(1.05);
+}
+
+/* Chart Section */
+.chart-card {
+    padding: 20px;
+}
+
+/* Table Styles */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+
+th {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
