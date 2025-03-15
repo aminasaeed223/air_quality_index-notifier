@@ -127,7 +127,7 @@ h1 {
 
 /* Refresh Button */
 #refresh-btn {
-    margin-top: 20px;
+    margin-top: 0.025px;
     padding: 12px 25px;
     font-size: 18px;
     font-weight: bold;
