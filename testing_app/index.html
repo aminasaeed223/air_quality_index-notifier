@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Index Notifier</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Air Quality Index (AQI) Notifier</h1>
+        <p>Live Air Quality Data for Your Location</p>
+
+        <!-- AQI Information Section -->
+        <div id="aqi-container">
+            <div id="aqi-section">
+                <p id="aqi-value">AQI: --</p>
+                <progress id="aqi-bar" value="0" max="300"></progress>
+            </div>
+        </div>
+
+        <!-- Weather Information & Health Advice -->
+        <p id="weather-info">🌡️ Temperature: --°C | 💧 Humidity: --% | 🌬️ Wind Speed: -- m/s</p>
+        <p id="health-advice">Health Advice will be shown here.</p>
+
+        <!-- AQI Trends Chart -->
+        <canvas id="aqiChart"></canvas>
+
+        <!-- AQI & Economic Impact Table -->
+        <h2>AQI & Economic Impact Table</h2>
+        <table id="aqiTable" class="display">
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>AQI Level</th>
+                    <th>Health Impact</th>
+                    <th>Economic Loss ($M)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically inserted -->
+            </tbody>
+        </table>
+
+        <!-- D3.js Visualization -->
+        <svg id="d3-visualization" width="500" height="400"></svg>
+
+        <!-- Refresh Button -->
+        <button id="refresh-btn">Refresh Data</button> 
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- Main Script -->
+    <script src="script.js" defer></script>
+</body>
+</html>
+
