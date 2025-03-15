@@ -22,6 +22,7 @@ async function initializeApp() {
     loadAQITable();
 }
 
+// Request permission for browser notifications
 async function requestNotificationPermission() {
     if ("Notification" in window) {
         try {
@@ -35,30 +36,12 @@ async function requestNotificationPermission() {
 
 function getHealthAdvice(aqi) {
     const advices = {
-        50: {
-            message: "✅ Air quality is excellent! Perfect for outdoor activities.",
-            icon: "🌳"
-        },
-        100: {
-            message: "🟡 Moderate air quality. Sensitive individuals should take precautions.",
-            icon: "⚠️"
-        },
-        150: {
-            message: "🟠 Unhealthy for sensitive groups. Limit outdoor exposure.",
-            icon: "😷"
-        },
-        200: {
-            message: "🔴 Unhealthy air! Wear masks and reduce outdoor activities.",
-            icon: "🏠"
-        },
-        300: {
-            message: "🟣 Very unhealthy! Stay indoors and use air purifiers.",
-            icon: "⛔"
-        },
-        1000: {
-            message: "☠️ Hazardous! Avoid outdoor activities completely.",
-            icon: "🚫"
-        }
+        50: { message: "✅ Air quality is excellent! Perfect for outdoor activities.", icon: "🌳" },
+        100: { message: "🟡 Moderate air quality. Sensitive individuals should take precautions.", icon: "⚠️" },
+        150: { message: "🟠 Unhealthy for sensitive groups. Limit outdoor exposure.", icon: "😷" },
+        200: { message: "🔴 Unhealthy air! Wear masks and reduce outdoor activities.", icon: "🏠" },
+        300: { message: "🟣 Very unhealthy! Stay indoors and use air purifiers.", icon: "⛔" },
+        1000: { message: "☠️ Hazardous! Avoid outdoor activities completely.", icon: "🚫" }
     };
 
     for (let threshold of Object.keys(advices).sort((a, b) => a - b)) {
@@ -68,6 +51,7 @@ function getHealthAdvice(aqi) {
     }
 }
 
+// Send a notification for bad air quality
 function sendNotification(aqi, message) {
     if ("Notification" in window && Notification.permission === "granted") {
         new Notification(`Air Quality Alert: AQI ${aqi}`, {
@@ -77,36 +61,14 @@ function sendNotification(aqi, message) {
     }
 }
 
+// Update weather info
 function updateWeatherDisplay(temp, humidity, windSpeed) {
     document.getElementById('temperature').textContent = `${temp}°C`;
     document.getElementById('humidity').textContent = `${humidity}%`;
     document.getElementById('wind-speed').textContent = `${windSpeed} m/s`;
 }
 
-function updateAQIDisplay(aqi) {
-    const aqiElement = document.getElementById("aqi-value");
-    const aqiBar = document.getElementById("aqi-bar");
-    
-    if (aqiElement && aqiBar) {
-        aqiElement.textContent = aqi;
-        aqiElement.className = `aqi-display ${getAQIClass(aqi)}`;
-        aqiBar.value = Math.min(aqi, 300);
-        
-        // Add animation class
-        aqiElement.classList.add('update-animation');
-        setTimeout(() => aqiElement.classList.remove('update-animation'), 500);
-    }
-}
-
-function getAQIClass(aqi) {
-    if (aqi <= 50) return "good";
-    if (aqi <= 100) return "moderate";
-    if (aqi <= 150) return "unhealthy-sensitive";
-    if (aqi <= 200) return "unhealthy";
-    if (aqi <= 300) return "very-unhealthy";
-    return "hazardous";
-}
-
+// Fetch AQI data
 async function fetchAQIData() {
     const url = `https://api.airvisual.com/v2/nearest_city?key=${apiKey}`;
 
@@ -130,9 +92,7 @@ async function fetchAQIData() {
                 sendNotification(aqi, "Air quality is unhealthy! Take precautions.");
             }
 
-            // Update chart with new data point
             updateChart(aqi);
-
         } else {
             console.error("API Response Error:", data);
             showError("Error fetching AQI data");
@@ -143,14 +103,32 @@ async function fetchAQIData() {
     }
 }
 
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    document.querySelector('.container').prepend(errorDiv);
-    setTimeout(() => errorDiv.remove(), 3000);
+// Display AQI
+function updateAQIDisplay(aqi) {
+    const aqiElement = document.getElementById("aqi-value");
+    const aqiBar = document.getElementById("aqi-bar");
+
+    if (aqiElement && aqiBar) {
+        aqiElement.textContent = aqi;
+        aqiElement.className = `aqi-display ${getAQIClass(aqi)}`;
+        aqiBar.value = Math.min(aqi, 300);
+
+        aqiElement.classList.add('update-animation');
+        setTimeout(() => aqiElement.classList.remove('update-animation'), 500);
+    }
 }
 
+// Determine AQI category
+function getAQIClass(aqi) {
+    if (aqi <= 50) return "good";
+    if (aqi <= 100) return "moderate";
+    if (aqi <= 150) return "unhealthy-sensitive";
+    if (aqi <= 200) return "unhealthy";
+    if (aqi <= 300) return "very-unhealthy";
+    return "hazardous";
+}
+
+// Load AQI chart
 function loadAQIChart() {
     const ctx = document.getElementById("aqiChart").getContext("2d");
 
@@ -161,7 +139,7 @@ function loadAQIChart() {
     aqiChartInstance = new Chart(ctx, {
         type: "line",
         data: {
-            labels: Array.from({length: 7}, (_, i) => {
+            labels: Array.from({ length: 7 }, (_, i) => {
                 const d = new Date();
                 d.setDate(d.getDate() - (6 - i));
                 return d.toLocaleDateString('en-US', { weekday: 'short' });
@@ -182,36 +160,15 @@ function loadAQIChart() {
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                    titleColor: "#fff",
-                    bodyColor: "#fff",
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                    borderWidth: 1
-                }
-            },
             scales: {
-                x: {
-                    grid: {
-                        color: "rgba(255, 255, 255, 0.1)"
-                    },
-                    ticks: { color: "#8b97a5" }
-                },
-                y: {
-                    min: 0,
-                    max: 300,
-                    grid: {
-                        color: "rgba(255, 255, 255, 0.1)"
-                    },
-                    ticks: { color: "#8b97a5" }
-                }
+                x: { ticks: { color: "#8b97a5" } },
+                y: { min: 0, max: 300, ticks: { color: "#8b97a5" } }
             }
         }
     });
 }
 
+// Update chart with new data
 function updateChart(newAQI) {
     if (aqiChartInstance) {
         const data = aqiChartInstance.data.datasets[0].data;
@@ -221,6 +178,7 @@ function updateChart(newAQI) {
     }
 }
 
+// Load AQI Table
 function loadAQITable() {
     $(document).ready(function () {
         if (!$.fn.DataTable.isDataTable("#aqiTable")) {
@@ -241,15 +199,14 @@ function loadAQITable() {
                 ],
                 pageLength: 5,
                 order: [[1, "desc"]],
-                responsive: true,
-                dom: '<"top"f>rt<"bottom"lip>',
-                language: {
-                    search: "Search Cities: "
-                }
+                responsive: true
             });
         }
     });
 }
 
-// Auto-update AQI data every 5 minutes
-setInterval(fetchAQIData, 300000);
+// Auto-refresh AQI data every 5 minutes
+setInterval(() => {
+    console.log("Fetching AQI data...");
+    fetchAQIData();
+}, 300000);
