@@ -1,7 +1,6 @@
-/* Global Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #2b5876, #4e4376);
+    background: linear-gradient(135deg, #50a4dc, #8068e0);
     color: white;
     text-align: center;
     margin: 0;
@@ -18,21 +17,27 @@ body {
     max-width: 600px;
     width: 90%;
     padding: 20px;
-    height: 1100px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease-in-out;
+    height: auto; /* Fixed height issue */
 }
 
 /* Heading */
 h1 {
     font-size: 32px;
     font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.span {
+    font-size: 1.5rem;
+    color: rgb(5, 69, 65);
 }
 
 /* AQI Section */
@@ -43,7 +48,6 @@ h1 {
     padding: 15px;
     margin: 20px 0;
     width: 100%;
-  
 }
 
 /* AQI Display */
@@ -55,7 +59,7 @@ h1 {
     border-radius: 10px;
     font-size: 28px;
     font-weight: bold;
-    min-width: 250px;
+    min-width: 550px;
     transition: all 0.3s ease-in-out;
 }
 
@@ -68,6 +72,11 @@ h1 {
     appearance: none;
     outline: none;
     border: none;
+}
+
+/* Weather Info */
+#weather-info {
+    color: rgb(5, 46, 43);
 }
 
 /* Progress Bar Customization */
@@ -108,20 +117,21 @@ h1 {
 
 /* Weather Info */
 #weather-info {
-    font-size: 18px;
+    font-size: 1.5rem;
     margin-top: 10px;
     font-weight: 500;
 }
 
 /* Health Advice */
 #health-advice {
-    font-size: 16px;
+    font-size: 1.2rem;
     font-style: italic;
     margin-top: 15px;
     padding: 12px;
-    border-left: 5px solid white;
+    border-left: 5px solid rgb(237, 108, 108);
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
+    color: #7b1d01;
     transition: all 0.3s ease-in-out;
 }
 
@@ -169,6 +179,4 @@ h1 {
         width: 140px;
     }
 }
-
-
 

@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Air Quality Index (AQI) Notifier</h1>
-        <p>Live Air Quality Data for Your Location</p>
+        <p class = "span">Live Air Quality Data for Your Location</p>
 
         <!-- AQI Information Section -->
         <div id="aqi-container">
@@ -38,6 +38,7 @@
                     <th>Economic Loss ($M)</th>
                 </tr>
             </thead>
+            <button id="refresh-btn">Refresh Data</button> 
             <tbody>
                 <!-- Data will be dynamically inserted -->
             </tbody>
@@ -47,7 +48,7 @@
         <svg id="d3-visualization" width="500" height="400"></svg>
 
         <!-- Refresh Button -->
-        <button id="refresh-btn">Refresh Data</button> 
+        
     </div>
 
     <!-- External Libraries -->

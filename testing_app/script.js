@@ -117,7 +117,7 @@ async function fetchAQIData() {
             console.log("AQI Data Updated:", new Date().toLocaleTimeString());
 
             // Send notifications and alerts if AQI is high
-            if (aqi > 150) {
+            if (aqi > 110) {
                 sendNotification(aqi, "Air quality is unhealthy! Consider wearing a mask.");
                 playAlertSound();
                 vibrateAlert();
