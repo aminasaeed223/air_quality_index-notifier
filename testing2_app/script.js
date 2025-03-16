@@ -34,27 +34,27 @@ async function requestNotificationPermission() {
     }
 }
 
-function getHealthAdvice(aqi) {
-    const advices = {
-        50: { message: "✅ Air quality is excellent! Perfect for outdoor activities.", icon: "🌳" },
-        100: { message: "🟡 Moderate air quality. Sensitive individuals should take precautions.", icon: "⚠️" },
-        150: { message: "🟠 Unhealthy for sensitive groups. Limit outdoor exposure.", icon: "😷" },
-        200: { message: "🔴 Unhealthy air! Wear masks and reduce outdoor activities.", icon: "🏠" },
-        300: { message: "🟣 Very unhealthy! Stay indoors and use air purifiers.", icon: "⛔" },
-        1000: { message: "☠️ Hazardous! Avoid outdoor activities completely.", icon: "🚫" }
-    };
-
-    for (let threshold of Object.keys(advices).sort((a, b) => a - b)) {
-        if (aqi <= threshold) {
-            return `${advices[threshold].icon} ${advices[threshold].message}`;
-        }
-    }
-}
+// function getHealthAdvice(aqi) {
+//     const advices = {
+//         50: { message: "✅ Air quality is excellent! Perfect for outdoor activities.", icon: "🌳" },
+//         100: { message: "🟡 Moderate air quality. Sensitive individuals should take precautions.", icon: "⚠️" },
+//         150: { message: "🟠 Unhealthy for sensitive groups. Limit outdoor exposure.", icon: "😷" },
+//         200: { message: "🔴 Unhealthy air! Wear masks and reduce outdoor activities.", icon: "🏠" },
+//         300: { message: "🟣 Very unhealthy! Stay indoors and use air purifiers.", icon: "⛔" },
+//         1000: { message: "☠️ Hazardous! Avoid outdoor activities completely.", icon: "🚫" }
+//     };
+//
+//     for (let threshold of Object.keys(advices).sort((a, b) => a - b)) {
+//         if (aqi <= threshold) {
+//             return `${advices[threshold].icon} ${advices[threshold].message}`;
+//         }
+//     }
+// }
 
 // Send a notification for bad air quality
 function sendNotification(aqi, message) {
-    if ("Notification" in window && Notification.permission === "granted") {
-        new Notification(`Air Quality Alert: AQI ${aqi}`, {
+    if ("Notification" in window && Notification.permission === "granted" && aqi > 150) {
+        new Notification(`⚠️ Air Quality Alert: AQI ${aqi}`, {
             body: message,
             icon: "https://img.icons8.com/color/96/000000/air-quality.png"
         });
@@ -77,21 +77,19 @@ async function fetchAQIData() {
         const data = await response.json();
 
         if (data.status === "success") {
-            const aqi = data.data.current.pollution.aqius;
-            const temp = data.data.current.weather.tp;
-            const humidity = data.data.current.weather.hu;
-            const windSpeed = data.data.current.weather.ws;
+            const aqi = data?.data?.current?.pollution?.aqius ?? localStorage.getItem("lastAQI") ?? "N/A";
+            localStorage.setItem("lastAQI", aqi);
+
+            const temp = data?.data?.current?.weather?.tp ?? "--";
+            const humidity = data?.data?.current?.weather?.hu ?? "--";
+            const windSpeed = data?.data?.current?.weather?.ws ?? "--";
 
             updateAQIDisplay(aqi);
             updateWeatherDisplay(temp, humidity, windSpeed);
+            const healthAlert = getSmartHealthAlerts(aqi, temp, humidity, windSpeed);
+            document.getElementById("health-advice").innerHTML = `<p>${healthAlert}</p>`;
 
-            const advice = getHealthAdvice(aqi);
-            document.getElementById("health-advice").innerHTML = `<p>${advice}</p>`;
-
-            if (aqi > 110) {
-                sendNotification(aqi, "Air quality is unhealthy! Take precautions.");
-            }
-
+            sendNotification(aqi, healthAlert);
             updateChart(aqi);
         } else {
             console.error("API Response Error:", data);
@@ -109,13 +107,44 @@ function updateAQIDisplay(aqi) {
     const aqiBar = document.getElementById("aqi-bar");
 
     if (aqiElement && aqiBar) {
-        aqiElement.textContent = aqi;
-        aqiElement.className = `aqi-display ${getAQIClass(aqi)}`;
-        aqiBar.value = Math.min(aqi, 300);
+        aqiElement.classList.add("fade-out");
 
-        aqiElement.classList.add('update-animation');
-        setTimeout(() => aqiElement.classList.remove('update-animation'), 500);
+        setTimeout(() => {
+            aqiElement.textContent = aqi;
+            aqiElement.className = `aqi-display ${getAQIClass(aqi)}`;
+            aqiBar.value = Math.min(aqi, 300);
+            aqiElement.classList.remove("fade-out");
+        }, 300);
     }
+}
+
+function getSmartHealthAlerts(aqi, temp, humidity, windSpeed) {
+    let message = "✅ Air quality is stable.";
+
+    switch (true) {
+        case (aqi > 200):
+            message = "🔴 Very Unhealthy: Stay indoors, use an air purifier, and wear a mask if going out!";
+            break;
+        case (aqi > 150):
+            message = "🟠 Unhealthy: Sensitive groups should avoid outdoor activities. Consider wearing a mask.";
+            break;
+        case (aqi > 100):
+            message = "🟡 Moderate: Consider reducing prolonged outdoor activities.";
+            break;
+    }
+
+    // Weather-based AI recommendations
+    if (temp > 35 && aqi > 100) {
+        message += " 🥵 It's also extremely hot, stay hydrated and limit outdoor exposure.";
+    }
+    if (humidity > 80 && aqi > 150) {
+        message += " 🌫️ High humidity can worsen pollution effects. Keep indoor air ventilated.";
+    }
+    if (windSpeed > 10 && aqi > 120) {
+        message += " 💨 Strong winds may spread pollutants further. Be cautious if you have respiratory conditions.";
+    }
+
+    return message;
 }
 
 // Determine AQI category

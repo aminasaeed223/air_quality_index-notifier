@@ -42,11 +42,28 @@ h1 {
 }
 
 /* Dashboard Grid */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    padding: 20px;
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .aqi-display {
+        font-size: 2rem;
+    }
+
+    .refresh-button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
 }
 
 /* Cards */
@@ -102,6 +119,11 @@ progress {
 .weather-icon {
     font-size: 2rem;
     display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+.weather-item:hover .weather-icon {
+    transform: scale(1.2);
 }
 
 .weather-data {
@@ -117,8 +139,22 @@ progress {
 .health-message {
     font-size: 1.2rem;
     background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.health-message p {
+    margin: 0;
     padding: 10px;
     border-radius: 8px;
+    font-size: 1rem;
+}
+
+.health-message p::before {
+    content: "🩺 ";
+    font-size: 1.2rem;
 }
 
 /* Refresh Button */
@@ -130,12 +166,21 @@ progress {
     border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
-    transition: 0.3s;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
 }
 
 .refresh-button:hover {
     background: #ff4d94;
     transform: scale(1.05);
+}
+
+.refreshing {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Chart Section */
