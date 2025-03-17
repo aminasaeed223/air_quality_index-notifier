@@ -12,17 +12,17 @@ AQI Notifier is a real-time air quality monitoring app that provides air quality
 **Historical AQI Trends** - Track air quality trends over time with interactive charts.  
 **Global Coverage** - Data sourced from multiple trusted environmental monitoring agencies.  
 
-## 🛠️ Technologies Used
+## Technologies Used
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Node.js
 - **APIs**: AirVisual API (for AQI data)
 - **AI Features**: AI-generated health alerts based on environmental conditions
 - **Data Visualization**: Chart.js
 
-## 📸 Screenshots
-(Include relevant images or GIFs of the application)
+## Screenshots
+https://youtu.be/KpgDpbo4aOc
 
-## 🔧 Installation & Setup
+## Installation & Setup
 
 ### 1️⃣ Clone the Repository
 ```bash
